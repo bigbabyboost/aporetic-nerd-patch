@@ -9,7 +9,7 @@
       pkgs = import nixpkgs { inherit system; };
     in {
       packages.${system}.default = pkgs.stdenv.mkDerivation rec {
-        pname = "patched-aporetic-fonts";
+        pname = "aporetic-nerd-patch";
         version = "1.2.0";
 
         src = pkgs.fetchFromGitHub {
