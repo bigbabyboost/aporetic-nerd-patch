@@ -32,15 +32,15 @@
 
           echo "🔍 Searching for all TTF-Unhinted folders under aporetic-*..."
 
-          find . -type d -iname "ttf-unhinted" | while IFS= read -r dir; do
+          find . -type d -iname "ttf-unhinted" | while read dir; do
             echo "📂 Found: $dir"
 
-            find "$dir" -type f -iname "*.ttf" | while IFS= read -r font; do
+            find "$dir" -type f -iname "*.ttf" | while read font; do
               if echo "$font" | grep -iq "mono"; then
                 echo "🎯 Patching $font (mono)"
                 nerd-font-patcher "$font" --complete --quiet --output patched
               else
-                echo "🎯 Patching $font (proportional) with --variable-width-glyphs"
+                echo "🎯 Patching $font propo with --variable-width-glyphs"
                 nerd-font-patcher "$font" --complete --quiet --variable-width-glyphs --output patched
               fi
             done
@@ -52,7 +52,7 @@
 
         installPhase = ''
           set -euo pipefail
-          dst=${out}/share/fonts/truetype/aporetic-nerd
+          dst=$out/share/fonts/truetype/aporetic-nerd
           mkdir -p "$dst"
 
           if ls patched/*.ttf > /dev/null 2>&1; then
