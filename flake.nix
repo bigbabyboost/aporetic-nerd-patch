@@ -1,5 +1,5 @@
 {
-  description = "Nerd-font patched Aporetic fonts (ttf-unhinted only)";
+  description = "Nerd-font patched Aporetic mono fonts (ttf-unhinted only)";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
@@ -9,7 +9,7 @@
       pkgs = import nixpkgs { inherit system; };
     in {
       packages.${system}.default = pkgs.stdenv.mkDerivation rec {
-        pname = "aporetic-nerd-patch";
+        pname = "aporetic-mono-nerd-patch";
         version = "1.2.0";
 
         src = pkgs.fetchFromGitHub {
@@ -35,14 +35,9 @@
           find . -type d -iname "ttf-unhinted" | while read dir; do
             echo "Found: $dir"
 
-            find "$dir" -type f -iname "*.ttf" | while read font; do
-              if echo "$font" | grep -iq "mono"; then
+            find "$dir" -type f -iname "*-mono-*.ttf" | while read font; do
                 echo "Patching $font (mono)"
                 nerd-font-patcher "$font" --complete --quiet --output patched
-              else
-                echo "Patching $font propo with --variable-width-glyphs"
-                nerd-font-patcher "$font" --complete --quiet --variable-width-glyphs --output patched
-              fi
             done
           done
 
@@ -64,7 +59,7 @@
         '';
 
         meta = with pkgs.lib; {
-          description = "Nerd-font patched Aporetic fonts (ttf-unhinted only)";
+          description = "Nerd-font patched Aporetic Mono fonts (ttf-unhinted only)";
           license = licenses.ofl;
           platforms = platforms.all;
         };
